@@ -1,3 +1,4 @@
+import 'package:atvlucas/models/client_model.dart';
 import 'package:atvlucas/screens/form_user.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<ClientModel> clientes = <ClientModel>[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +73,12 @@ class _HomePageState extends State<HomePage> {
                 'Criar Cliente',
                 style: TextStyle(fontSize: 20),
               ),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FormUser())),
+              // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FormUser(clientes: clientes))),
+              onPressed: () {
+                print(clientes);
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FormUser(clientes: clientes)));
+              },
             ),
           ],
         ),

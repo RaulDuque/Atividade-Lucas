@@ -1,8 +1,11 @@
+import 'package:atvlucas/models/client_model.dart';
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart' as validator;
 
 class FormUser extends StatefulWidget {
-  FormUser({Key? key}) : super(key: key);
+  FormUser({Key? key, required this.clientes}) : super(key: key);
+
+  final List<ClientModel> clientes;
 
   @override
   _FormUserState createState() => _FormUserState();
@@ -10,11 +13,19 @@ class FormUser extends StatefulWidget {
 
 class _FormUserState extends State<FormUser> {
   final formKey = GlobalKey<FormState>();
-  final controller = TextEditingController();
+  final controllerNome = TextEditingController();
+  final controllerEmail = TextEditingController();
+  final controllerTelefone = TextEditingController();
+  final controllerCPF = TextEditingController();
+  String? sexo;
 
   @override
   void dispose() {
-    controller.dispose();
+    controllerNome.dispose();
+    controllerEmail.dispose();
+    controllerTelefone.dispose();
+    controllerCPF.dispose();
+
     super.dispose();
   }
 
@@ -42,6 +53,7 @@ class _FormUserState extends State<FormUser> {
               children: [
                 CustomTextField(
                   label: 'Nome',
+                  controller: controllerNome,
                   icon: Icons.account_circle,
                   validator: (text) => text == null || text.isEmpty
                       ? 'Campo obrigatório'
@@ -51,12 +63,12 @@ class _FormUserState extends State<FormUser> {
 
                 CustomTextField(
                   label: 'E-mail',
+                  controller: controllerEmail,
                   icon: Icons.mail,
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Campo obrigatório';
-                    }
-                    if (validator.isEmail(text)) {
+                    } else if (!validator.isEmail(text)) {
                       return 'E-mail inválido';
                     }
                   },
@@ -65,17 +77,19 @@ class _FormUserState extends State<FormUser> {
 
                 CustomTextField(
                   label: 'Telefone',
+                  controller: controllerTelefone,
                   icon: Icons.phone,
                 ),
                 SizedBox(height: 20),
 
                 CustomTextField(
                   label: 'CPF',
+                  controller: controllerCPF,
                   icon: Icons.assignment_late,
                 ),
                 SizedBox(height: 20),
 
-                OptionsButton(),
+                OptionsButton(onChanged: (value) => setState(() => sexo = value)),
                 SizedBox(height: 92),
 
                 ElevatedButton(
@@ -83,11 +97,8 @@ class _FormUserState extends State<FormUser> {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   onPressed: () {
-                    print(formKey);
-                    print(formKey.currentState);
-
                     if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
+                      salvarCliente();
                     }
                   },
                   child: Text(
@@ -102,17 +113,41 @@ class _FormUserState extends State<FormUser> {
       ),
     );
   }
+
+  /// Cria um novo cliente conforme os dados informados no formulário
+  void salvarCliente() {
+    final String nome = controllerNome.text;
+    final String email = controllerEmail.text;
+    final String cpf = controllerCPF.text;
+    final String telefone = controllerTelefone.text;
+    int id;
+
+    if (widget.clientes.isEmpty) {
+      id = 1;
+    } else {
+      // Procura pelo cliente com o maior `id`
+      final ClientModel cliente = widget.clientes.reduce((current, next) => current.id < next.id ? next : current);
+
+      id = cliente.id + 1;
+    }
+
+    widget.clientes.add(ClientModel(id: id, nome: nome, email: email, cpf: cpf, telefone: telefone, sexo: sexo));
+
+    Navigator.pop(context);
+  }
 }
 
 class CustomTextField extends StatelessWidget {
   final String label;
   final IconData? icon;
+  final TextEditingController controller;
   final String? Function(String? text)? validator;
   final void Function(String? text)? onSaved;
 
   const CustomTextField({
     Key? key,
     required this.label,
+    required this.controller,
     this.icon,
     this.validator,
     this.onSaved,
@@ -121,8 +156,6 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
-      onSaved: onSaved,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Colors.black, fontSize: 16),
@@ -131,12 +164,18 @@ class CustomTextField extends StatelessWidget {
         ),
         prefixIcon: icon == null ? null : Icon(icon),
       ),
+      textInputAction: TextInputAction.next,
+      controller: controller,
+      validator: validator,
+      // onSaved: onSaved,
     );
   }
 }
 
 class OptionsButton extends StatelessWidget {
-  const OptionsButton({Key? key}) : super(key: key);
+  const OptionsButton({Key? key, required this.onChanged}) : super(key: key);
+
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -148,22 +187,22 @@ class OptionsButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
       ),
-      value: 'cliente',
+      value: 'Masculino',
       items: [
         DropdownMenuItem(
           child: Text('Masculino'),
-          value: 'cliente',
+          value: 'Masculino',
         ),
         DropdownMenuItem(
           child: Text('Feminino'),
-          value: 'clienteF',
+          value: 'Feminino',
         ),
         DropdownMenuItem(
           child: Text('Outro'),
-          value: 'clienteO',
+          value: 'Outro',
         ),
       ],
-      onChanged: (value) {},
+      onChanged: onChanged,
     );
   }
 }
