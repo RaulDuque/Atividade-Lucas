@@ -1,5 +1,6 @@
 import 'package:atvlucas/models/client_model.dart';
-import 'package:atvlucas/screens/form_user.dart';
+import 'package:atvlucas/screens/criar_cliente.dart';
+import 'package:atvlucas/screens/listar_clientes.dart';
 import 'package:flutter/material.dart';
 
 /// Faça um app que cadastre e exiba as informações de clientes. As informações de um cliente são código, nome, telefone, CPF, e-mail e sexo.
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 'Visualizar Clientes',
                 style: TextStyle(fontSize: 20),
               ),
-              onPressed: () {},
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ListarClientes(clientes))),
             ),
 
             SizedBox(height: 20),
@@ -73,12 +74,7 @@ class _HomePageState extends State<HomePage> {
                 'Criar Cliente',
                 style: TextStyle(fontSize: 20),
               ),
-              // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FormUser(clientes: clientes))),
-              onPressed: () {
-                print(clientes);
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FormUser(clientes: clientes)));
-              },
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CriarCliente(clientes))),
             ),
           ],
         ),

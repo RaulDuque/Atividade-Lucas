@@ -2,22 +2,22 @@ import 'package:atvlucas/models/client_model.dart';
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart' as validator;
 
-class FormUser extends StatefulWidget {
-  FormUser({Key? key, required this.clientes}) : super(key: key);
+class CriarCliente extends StatefulWidget {
+  CriarCliente(this.clientes, {Key? key}) : super(key: key);
 
   final List<ClientModel> clientes;
 
   @override
-  _FormUserState createState() => _FormUserState();
+  _CriarClienteState createState() => _CriarClienteState();
 }
 
-class _FormUserState extends State<FormUser> {
+class _CriarClienteState extends State<CriarCliente> {
   final formKey = GlobalKey<FormState>();
   final controllerNome = TextEditingController();
   final controllerEmail = TextEditingController();
   final controllerTelefone = TextEditingController();
   final controllerCPF = TextEditingController();
-  String? sexo;
+  String? sexo = 'Masculino';
 
   @override
   void dispose() {
@@ -27,6 +27,28 @@ class _FormUserState extends State<FormUser> {
     controllerCPF.dispose();
 
     super.dispose();
+  }
+
+  /// Cria um novo cliente conforme os dados informados no formulário
+  void salvarCliente() {
+    final String nome = controllerNome.text;
+    final String email = controllerEmail.text;
+    final String cpf = controllerCPF.text;
+    final String telefone = controllerTelefone.text;
+    int id;
+
+    if (widget.clientes.isEmpty) {
+      id = 1;
+    } else {
+      // Procura pelo cliente com o maior `id`
+      final ClientModel cliente = widget.clientes.reduce((current, next) => current.id < next.id ? next : current);
+
+      id = cliente.id + 1;
+    }
+
+    widget.clientes.add(ClientModel(id: id, nome: nome, email: email, cpf: cpf, telefone: telefone, sexo: sexo));
+
+    Navigator.pop(context);
   }
 
   @override
@@ -78,6 +100,7 @@ class _FormUserState extends State<FormUser> {
                 CustomTextField(
                   label: 'Telefone',
                   controller: controllerTelefone,
+                  keyboardType: TextInputType.number,
                   icon: Icons.phone,
                 ),
                 SizedBox(height: 20),
@@ -85,6 +108,7 @@ class _FormUserState extends State<FormUser> {
                 CustomTextField(
                   label: 'CPF',
                   controller: controllerCPF,
+                  keyboardType: TextInputType.number,
                   icon: Icons.assignment_late,
                 ),
                 SizedBox(height: 20),
@@ -113,34 +137,13 @@ class _FormUserState extends State<FormUser> {
       ),
     );
   }
-
-  /// Cria um novo cliente conforme os dados informados no formulário
-  void salvarCliente() {
-    final String nome = controllerNome.text;
-    final String email = controllerEmail.text;
-    final String cpf = controllerCPF.text;
-    final String telefone = controllerTelefone.text;
-    int id;
-
-    if (widget.clientes.isEmpty) {
-      id = 1;
-    } else {
-      // Procura pelo cliente com o maior `id`
-      final ClientModel cliente = widget.clientes.reduce((current, next) => current.id < next.id ? next : current);
-
-      id = cliente.id + 1;
-    }
-
-    widget.clientes.add(ClientModel(id: id, nome: nome, email: email, cpf: cpf, telefone: telefone, sexo: sexo));
-
-    Navigator.pop(context);
-  }
 }
 
 class CustomTextField extends StatelessWidget {
   final String label;
   final IconData? icon;
   final TextEditingController controller;
+  final TextInputType keyboardType;
   final String? Function(String? text)? validator;
   final void Function(String? text)? onSaved;
 
@@ -149,6 +152,7 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     required this.controller,
     this.icon,
+    this.keyboardType = TextInputType.text,
     this.validator,
     this.onSaved,
   }) : super(key: key);
@@ -164,10 +168,10 @@ class CustomTextField extends StatelessWidget {
         ),
         prefixIcon: icon == null ? null : Icon(icon),
       ),
+      keyboardType: keyboardType,
       textInputAction: TextInputAction.next,
       controller: controller,
       validator: validator,
-      // onSaved: onSaved,
     );
   }
 }
