@@ -11,6 +11,13 @@ class FormUser extends StatefulWidget {
 class _FormUserState extends State<FormUser> {
   final formKey = GlobalKey<FormState>();
   final controller = TextEditingController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,78 +25,79 @@ class _FormUserState extends State<FormUser> {
         centerTitle: true,
         title: Text(
           'Cadastrar Cliente',
-          style: TextStyle(
-              color: Colors.black87, fontSize: 30, fontWeight: FontWeight.bold),
+          // style: TextStyle(
+          //   color: Colors.black87,
+          //   fontSize: 30,
+          //   fontWeight: FontWeight.bold,
+          // ),
         ),
       ),
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
           child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  CustomTextField(
-                    label: 'Nome',
-                    icon: Icons.account_circle,
-                    validator: (text) => text == null || text.isEmpty
-                        ? 'Campo obrigatório'
-                        : null,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomTextField(
+                  label: 'Nome',
+                  icon: Icons.account_circle,
+                  validator: (text) => text == null || text.isEmpty
+                      ? 'Campo obrigatório'
+                      : null,
+                ),
+                SizedBox(height: 20),
+
+                CustomTextField(
+                  label: 'E-mail',
+                  icon: Icons.mail,
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    if (validator.isEmail(text)) {
+                      return 'E-mail inválido';
+                    }
+                  },
+                ),
+                SizedBox(height: 20),
+
+                CustomTextField(
+                  label: 'Telefone',
+                  icon: Icons.phone,
+                ),
+                SizedBox(height: 20),
+
+                CustomTextField(
+                  label: 'CPF',
+                  icon: Icons.assignment_late,
+                ),
+                SizedBox(height: 20),
+
+                OptionsButton(),
+                SizedBox(height: 92),
+
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  SizedBox(
-                    height: 10,
+                  onPressed: () {
+                    print(formKey);
+                    print(formKey.currentState);
+
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                    }
+                  },
+                  child: Text(
+                    'Salvar',
+                    style: TextStyle(fontSize: 20),
                   ),
-                  CustomTextField(
-                      label: 'E-mail',
-                      icon: Icons.mail,
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Campo obrigatório';
-                        }
-                        if (validator.isEmail(text)) {
-                          return 'E-mail inválido';
-                        }
-                      }),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextField(
-                    label: 'telefone',
-                    icon: Icons.phone,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextField(
-                    label: 'CPF',
-                    icon: Icons.assignment_late,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  OptionsButton(),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue[700],
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 100,
-                        ),
-                      ),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                        }
-                      },
-                      child: Text(
-                        'Salvar',
-                        style: TextStyle(color: Colors.black, fontSize: 20),
-                      ))
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -134,7 +142,7 @@ class OptionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        labelText: 'GENERO',
+        labelText: 'Sexo',
         labelStyle: TextStyle(color: Colors.black, fontSize: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
