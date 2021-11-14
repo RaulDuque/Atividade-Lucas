@@ -46,9 +46,18 @@ class _CriarClienteState extends State<CriarCliente> {
       id = cliente.id + 1;
     }
 
-    widget.clientes.add(ClientModel(id: id, nome: nome, email: email, cpf: cpf, telefone: telefone, sexo: sexo));
+    widget.clientes.insert(0, ClientModel(id: id, nome: nome, email: email, cpf: cpf, telefone: telefone, sexo: sexo));
 
-    Navigator.pop(context);
+    // Exibindo uma mensagem de sucesso e limpando o formulário ao criar o cliente
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Cliente criado com sucesso'),
+      elevation: 4,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.green,
+    ));
+
+    formKey.currentState!.reset();
+    FocusScope.of(context).unfocus();
   }
 
   @override
