@@ -10,11 +10,11 @@ A activity responsável por exibir as informações de um cliente deve apresenta
 
 ---
 
-<img width="31%" align="left" alt="Tela inicial" src="https://user-images.githubusercontent.com/57442687/142070475-1a0dab91-ceb4-4f4e-8015-8ba95a403f13.png">
-<img width="31%" align="left" alt="Formulário de criação do cliente" src="https://user-images.githubusercontent.com/57442687/142070546-46fc6811-dd25-41d5-9061-adaaa9ee9ec8.png">
-<img width="31%" align="left" alt="Cliente criado" src="https://user-images.githubusercontent.com/57442687/142070582-952f6625-72d0-400b-8507-87c804802721.png">
-<img width="31%" align="left" alt="Listagem dos clientes" src="https://user-images.githubusercontent.com/57442687/142070604-05396d72-caf7-4d44-934a-e6bdafc6c4ec.png">
-<img width="31%" align="left" alt="Busca do cliente pelo Id" src="https://user-images.githubusercontent.com/57442687/142070614-9b2e2667-bc18-4c88-8aa7-51ed0fb0ae6b.png">
+<img width="29%" align="left" alt="Tela inicial" src="https://user-images.githubusercontent.com/57442687/142070475-1a0dab91-ceb4-4f4e-8015-8ba95a403f13.png">
+<img width="29%" align="left" alt="Formulário de criação do cliente" src="https://user-images.githubusercontent.com/57442687/142070546-46fc6811-dd25-41d5-9061-adaaa9ee9ec8.png">
+<img width="29%" align="left" alt="Cliente criado" src="https://user-images.githubusercontent.com/57442687/142070582-952f6625-72d0-400b-8507-87c804802721.png">
+<img width="29%" align="left" alt="Listagem dos clientes" src="https://user-images.githubusercontent.com/57442687/142070604-05396d72-caf7-4d44-934a-e6bdafc6c4ec.png">
+<img width="29%" align="left" alt="Busca do cliente pelo Id" src="https://user-images.githubusercontent.com/57442687/142070614-9b2e2667-bc18-4c88-8aa7-51ed0fb0ae6b.png">
 
 <!--
 ![Tela inicial](https://user-images.githubusercontent.com/57442687/142070475-1a0dab91-ceb4-4f4e-8015-8ba95a403f13.png)
